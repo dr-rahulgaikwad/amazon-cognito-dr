@@ -41,3 +41,7 @@ Attached as a Cognito User Migration trigger on the DR pool. When a user not in 
 
 For detailed step-by-step guide, refer [How to setup DR for Amazon Cognito User Pools](https://medium.com/@dr-rahul-gaikwad/7d110bafc62a)
 
+
+---
+
+> 🤖 This solution was built with [Kiro](https://kiro.dev) — vibe coding with AI.
