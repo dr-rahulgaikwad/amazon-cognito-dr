@@ -1,25 +1,17 @@
 # Setup & Configuration Guide
 
-> **Strategy:** Pre-Migration Sync + JIT Migration Lambda  
-> **Primary region:** us-east-1 | **DR region:** us-west-2  
-> **Runtime:** Python 3.12 | **CLI:** AWS CLI v2  
-> **Time to complete:** ~30 minutes
-
----
-
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
-2. [Known Pitfalls](#known-pitfalls)
-3. [Shell Variables](#shell-variables)
-4. [Part 1 — Primary Pool (us-east-1)](#part-1--primary-pool-us-east-1)
-5. [Part 2 — DR Pool (us-west-2)](#part-2--dr-pool-us-west-2)
-6. [Part 3 — IAM Roles](#part-3--iam-roles)
-7. [Part 4 — Lambda Functions](#part-4--lambda-functions)
-8. [Part 5 — EventBridge Schedule](#part-5--eventbridge-schedule)
-9. [Part 6 — Initial Sync & Verify](#part-6--initial-sync--verify)
-10. [Cleanup](#cleanup)
-11. [Troubleshooting](#troubleshooting)
+2. [Shell Variables](#shell-variables)
+3. [Part 1 — Primary Pool (us-east-1)](#part-1--primary-pool-us-east-1)
+4. [Part 2 — DR Pool (us-west-2)](#part-2--dr-pool-us-west-2)
+5. [Part 3 — IAM Roles](#part-3--iam-roles)
+6. [Part 4 — Lambda Functions](#part-4--lambda-functions)
+7. [Part 5 — EventBridge Schedule](#part-5--eventbridge-schedule)
+8. [Part 6 — Initial Sync & Verify](#part-6--initial-sync--verify)
+9. [Cleanup](#cleanup)
+10. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -41,22 +33,6 @@ aws cognito-idp list-user-pools --max-results 1 --region us-west-2
 - `secretsmanager:CreateSecret`, `secretsmanager:ReplicateSecretToRegions`
 - `scheduler:CreateSchedule`
 - `logs:*` (for CloudWatch Logs access)
-
----
-
-## Known Pitfalls
-
-These were discovered during real execution. Read before starting.
-
-| Pitfall | Symptom | Fix |
-|---|---|---|
-| `!` in password inside double quotes | `for dquote>` prompt in bash/zsh | Always wrap passwords in **single quotes**: `'Password@2026!'` |
-| Multi-line command pasted with line breaks | `zsh: no such file or directory: fileb://...` | Run AWS CLI commands as a **single line** |
-| IAM policy has wrong account ID | `AccessDeniedException` on Lambda invoke | Run `aws sts get-caller-identity` first |
-| Primary pool stores UUIDs as usernames | `InvalidParameterException` in pre-sync | Use `attrs.get("email")` — not `user["Username"]` |
-| Placeholder password missing numbers | `InvalidPasswordException` in pre-sync | Must satisfy pool policy: `Placeholder1@DR!` |
-| Secret-enabled client used from CLI | `NotAuthorizedException: SECRET_HASH was not received` | Create a secret-less client for CLI testing |
-| Migration Lambda not firing | Login fails with `NotAuthorizedException` for non-existent user | Confirm Lambda is attached: `describe-user-pool --query 'UserPool.LambdaConfig'` |
 
 ---
 

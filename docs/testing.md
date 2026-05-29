@@ -1,12 +1,5 @@
 # DR Testing Guide
 
-> **Purpose:** Validate all Cognito DR failover scenarios with CLI commands  
-> **Prerequisites:** Complete the [Setup Guide](setup.md) first  
-> **Time to complete:** ~20 minutes  
-> **All tests are non-destructive** — Test 8 restores full state
-
----
-
 ## Shell Variables — Set Before Testing
 
 ```bash
