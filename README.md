@@ -37,56 +37,7 @@ Attached as a Cognito User Migration trigger on the DR pool. When a user not in 
 
 ![Cognito DR](images/cognito-dr-architecture.png)
 
-## Why This Approach?
+## Guidance
 
-| Criteria | This Solution |
-|---|---|
-| **Seamless login after failover** | ✅ Same password, no reset |
-| **Works if primary completely down** | ✅ For pre-synced users (with enhancement) |
-| **Active session continuity** | ❌ Re-login required once (unavoidable with any multi-pool strategy) |
-| **RPO** | ~1 hour (sync interval, configurable) |
-| **RTO** | < 5 minutes |
-| **App code changes** | None |
-| **Additional cost** | ~$5/month |
-| **AWS-native** | ✅ No third-party dependencies |
-| **Complexity** | Medium |
+For detailed step-by-step guide, refer [How to setup DR for Amazon Cognito User Pools](https://medium.com/@dr-rahul-gaikwad/7d110bafc62a)
 
-### Comparison with Alternatives
-
-| Approach | Password Reset? | Works if Primary Down? | Cost | Complexity |
-|---|---|---|---|---|
-| CSV Backup & Restore | ✅ Required | ✅ Yes | ~$0 | Low |
-| JIT Migration Only | ❌ Not required | ❌ No | ~$0 | Medium |
-| OIDC Federation | ❌ Not required | ❌ No (defeats DR) | ~$0 | High |
-| Third-Party IdP (Okta/Auth0) | ❌ Not required | ✅ Yes | $200-500/mo | Very High |
-| AWS Export Reference Arch | ✅ Required | ✅ Yes | ~$10-20 | Medium |
-| **Pre-Sync + JIT Migration** ✅ | **❌ Not required** | **✅ Yes** | **~$5** | **Medium** |
-
----
-
-## Components
-
-```
-cognito-dr-opensource/
-├── README.md                          # This file
-├── lambda/
-│   ├── migration/
-│   │   └── lambda_function.py         # JIT Migration Lambda
-│   └── presync/
-│       └── lambda_function.py         # Pre-Sync Lambda (hourly)
-├── docs/
-│   ├── SETUP.md                       # Step-by-step setup guide
-│   └── TESTING.md                     # DR testing guide with CLI commands
-└── LICENSE
-```
-
-| Component | Purpose | Region |
-|---|---|---|
-| Primary Cognito Pool | Production user pool | us-east-1 (configurable) |
-| DR Cognito Pool | Standby pool with pre-synced users | us-west-2 (configurable) |
-| Migration Lambda | JIT user migration on login | DR region |
-| Pre-Sync Lambda | Hourly user roster sync | DR region |
-| EventBridge Scheduler | Triggers pre-sync hourly | DR region |
-| Secrets Manager | Stores primary pool config, replicated to DR | Both regions |
-
----
