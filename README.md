@@ -35,7 +35,7 @@ Attached as a Cognito User Migration trigger on the DR pool. When a user not in 
 
 ## Architecture
 
-![Cognito DR](/amazon-cognito-dr//images/cognito-dr-architecture.png)
+![Cognito DR](images/cognito-dr-architecture.png)
 
 ## Why This Approach?
 
