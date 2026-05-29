@@ -44,4 +44,4 @@ For detailed step-by-step guide, refer [How to setup DR for Amazon Cognito User�
 
 ---
 
-> 🤖 This solution was built with [Kiro](https://kiro.dev) — vibe coding with AI.
+> This solution is enhanced with [Kiro](https://kiro.dev) — AI IDE. 🤖 
